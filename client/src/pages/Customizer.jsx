@@ -19,6 +19,14 @@ const Customizer = () => {
     stylishShirt: false,
   });
 
+  const handleTabClick = (tabName) => {
+    if (activeEditorTab === tabName) {
+      setActiveEditorTab("");
+    } else {
+      setActiveEditorTab(tabName);
+    }
+  };
+
   // show tab content depending on the activeTab
   const generateTabContent = () => {
     switch (activeEditorTab) {
@@ -32,11 +40,38 @@ const Customizer = () => {
             prompt={prompt}
             setPrompt={setPrompt}
             generatingImg={generatingImg}
-            // handleSubmit={handleSubmit}
+            handleSubmit={handleSubmit}
           />
         );
       default:
         return null;
+    }
+  };
+
+  const handleSubmit = async (type) => {
+    if (!prompt) return alert("Please enter a prompt");
+
+    try {
+      setGeneratingImg(true);
+
+      const response = await fetch("http://localhost:8080/api/v1/dalle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt,
+        }),
+      });
+
+      const data = await response.json();
+
+      handleDecals(type, `data:image/png;base64,${data.photo}`);
+    } catch (error) {
+      alert(error);
+    } finally {
+      setGeneratingImg(false);
+      setActiveEditorTab("");
     }
   };
 
@@ -95,7 +130,7 @@ const Customizer = () => {
                   <Tab
                     key={tab.name}
                     tab={tab}
-                    handleClick={() => setActiveEditorTab(tab.name)}
+                    handleClick={() => handleTabClick(tab.name)}
                   />
                 ))}
 
@@ -125,8 +160,8 @@ const Customizer = () => {
                 key={tab.name}
                 tab={tab}
                 isFilterTab
-                isActiveTab=""
-                handleClick={() => {}}
+                isActiveTab={activeFilterTab[tab.name]}
+                handleClick={() => handleActiveFilterTab(tab.name)}
               />
             ))}
           </motion.div>
