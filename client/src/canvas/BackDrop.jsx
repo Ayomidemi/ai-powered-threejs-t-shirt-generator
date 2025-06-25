@@ -9,10 +9,11 @@ const Backdrop = () => {
       ref={shadows}
       temporal
       frames={60}
-      alphaTest={0.55}
-      scae={10}
+      alphaTest={0.75}
+      scale={10}
       rotation={[Math.PI / 2, 0, 0]}
       position={[0, 0, -0.14]}
+      opacity={0.4}
     >
       <RandomizedLight
         amount={2}

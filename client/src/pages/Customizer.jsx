@@ -103,8 +103,25 @@ const Customizer = () => {
 
     state[decalType.stateProperty] = result;
 
-    if (!activeFilterTab[decalType.filterTab]) {
-      handleActiveFilterTab(decalType.filterTab);
+    // Clear the opposite texture and disable its display
+    if (type === "logo") {
+      // When setting logo, clear full texture and disable full texture display
+      state.fullDecal = "./threejs.png"; // Reset to default
+      state.isFullTexture = false;
+      state.isLogoTexture = true;
+      setActiveFilterTab({
+        logoShirt: true,
+        stylishShirt: false,
+      });
+    } else if (type === "full") {
+      // When setting full texture, clear logo and disable logo display
+      state.logoDecal = "./threejs.png"; // Reset to default
+      state.isLogoTexture = false;
+      state.isFullTexture = true;
+      setActiveFilterTab({
+        logoShirt: false,
+        stylishShirt: true,
+      });
     }
   };
 
