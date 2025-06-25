@@ -8,7 +8,7 @@ dotenv.config();
 const router = express.Router();
 
 // Using Hugging Face's free Stable Diffusion model
-const hf = new HfInference(process.env.HUGGINGFACE_API_KEY || ""); // Works without API key on free tier
+const hf = new HfInference(process.env.HUGGINGFACE_API_KEY || "");
 
 router.route("/").get((req, res) => {
   res
@@ -16,7 +16,6 @@ router.route("/").get((req, res) => {
     .json({ message: "Hello from AI Image Generator (Hugging Face)" });
 });
 
-// Fallback function to generate colorful patterns
 async function generatePatternImage(prompt) {
   const colors = [
     "#FF6B6B",
