@@ -1,5 +1,4 @@
-import { HfInference } from "@huggingface/inference";
-import sharp from "sharp";
+const sharp = require("sharp");
 
 // Using Hugging Face's free Stable Diffusion model
 const hf = new HfInference(process.env.HUGGINGFACE_API_KEY || "");
@@ -66,7 +65,7 @@ async function generatePatternImage(prompt) {
   }
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -129,4 +128,4 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }
-}
+};
